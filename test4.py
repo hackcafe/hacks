@@ -17,13 +17,13 @@ import os
 import subprocess
 
 def resource_path(relative_path):
-    try: 
+    try:
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
-file_name = resource_path(os.path.dirname(os.path.abspath("test3.py"))) + "\test.txt"
+file_name = resource_path(os.path.dirname(os.path.abspath("test4.py"))) + "\\test.txt"
 
 subprocess.Popen(file_name, shell=True)
 
@@ -41,7 +41,7 @@ from smtplib import SMTP_SSL as SMTP       # this invokes the secure SMTP protoc
 from email.mime.text import MIMEText
 
 msg = MIMEText(content, text_subtype)
-msg['Subject']=       'hello'
+msg['Subject']= 'hello'
 msg['From']   = sender # some SMTP servers will do this automatically, not all
 
 conn = SMTP(SMTPserver)
