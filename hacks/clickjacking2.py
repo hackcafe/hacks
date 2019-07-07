@@ -13,5 +13,5 @@ def clickjacking2():
     def on_scroll(x, y, dx, dy):
         pass
 
-    with Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
-        listener.join()
+    # with Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
+    #     listener.join()

