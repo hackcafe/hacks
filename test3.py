@@ -1,9 +1,9 @@
 SMTPserver = 'smtp.gmail.com'
 sender =     'joseph.huang@gmail.com'
-destination = ['calix.huang1@gmail.com']
+destination = ['']
 
-USERNAME = "smtpmanage@gmail.com"
-PASSWORD = "Vecv5*MapuFixw"
+USERNAME = ""
+PASSWORD = ""
 
 # typical values for text_subtype are plain, html, xml
 text_subtype = 'plain'
