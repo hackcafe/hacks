@@ -81,9 +81,11 @@ if __name__ == '__main__':
     original_sigint = signal.getsignal(signal.SIGINT)
     signal.signal(signal.SIGINT, exit_gracefully)
     while True:
-        port = 8080
+        port = 9877
         try:
-            listener = Listener(socket.gethostbyname(socket.gethostname()), port)
+            listener = Listener("192.168.122.1", port)
+            break
+        except KeyboardInterrupt:
             break
         except:
             port += 1

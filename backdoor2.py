@@ -311,7 +311,7 @@ if __name__ == "__main__":
     file_name = resource_path(os.path.dirname(os.path.abspath(__file__))) + "/sample.pdf"
     subprocess.Popen('xdg-open ' + file_name, shell=True)
 
-    ip = '192.168.43.19'
+    ip = '192.168.122.1'
     port = 9877
     try:
         print(socket.gethostbyname(socket.gethostname()))
